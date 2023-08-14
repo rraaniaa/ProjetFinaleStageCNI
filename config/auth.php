@@ -42,7 +42,7 @@ return [
         ],
         'front' => [
             'driver' => 'session',
-            'provider' => 'frontusers',
+            'provider' => 'users',
         ],
         
     ],
@@ -72,7 +72,7 @@ return [
         
         'frontusers' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Frontuser::class,
+            'model' => App\Models\User::class,
         ],
 
         // 'users' => [

@@ -17,10 +17,11 @@
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
     <body class="font-sans antialiased">
+    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('formateur'))
         <div x-data="{ sidebarOpen: false }" class="flex h-screen bg-gray-200">
             <div :class="sidebarOpen ? 'block' : 'hidden'" @click="sidebarOpen = false" class="fixed z-20 inset-0 bg-black opacity-50 transition-opacity lg:hidden"></div>
         
-            @include('layouts.sidebar');
+            @include('layouts.sidebar')
 
             <div class="flex-1 flex flex-col overflow-scroll">
 
@@ -56,5 +57,17 @@
                     
             </div>
         </div>
+        
+        @else 
+        <div class="min-h-screen bg-gray-100">
+            @include('layouts.navigation')
+
+
+
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
+        </div>@endif
     </body>
 </html>

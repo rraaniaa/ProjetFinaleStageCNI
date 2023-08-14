@@ -30,12 +30,22 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user= User::latest()->get();
-
-        return view('setting.user.index',['users'=>$user]);
+        $filterName = $request->input('filter_name'); // Get the filter value from the request
+    
+        // Query users based on the filter name
+        $query = User::query();
+    
+        if ($filterName) {
+            $query->where('name', 'LIKE', '%' . $filterName . '%');
+        }
+    
+        $users = $query->latest()->get();
+    
+        return view('setting.user.index', ['users' => $users, 'filterName' => $filterName]);
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -128,9 +138,26 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Role $role)
+
+     
+    public function destroy(User $user)
     {
-        $role->delete();
-        return redirect()->back()->withSuccess('Role deleted !!!');
+        $user->delete();
+        return redirect()->back()->withSuccess('User deleted !!!');
     }
+
+    
+
+    public function showUsersWithUserRole()
+{
+    // Get the users with the "user" role
+    $usersWithUserRole = User::whereHas('roles', function ($query) {
+        $query->where('name', 'user');
+    })->get();
+
+    return view('users.index', compact('usersWithUserRole'));
+}
+
+
+
 }

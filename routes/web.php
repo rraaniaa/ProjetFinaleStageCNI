@@ -16,6 +16,16 @@ use App\Http\Controllers\Admin\{
 | contains the "web" middleware group. Now create something great!
 |
 */
+// routes/web.php
+// routes/web.php
+
+use App\Http\Controllers\EntrepriseController;
+
+
+Route::post('/entreprise', [EntrepriseController::class, 'store'])->name('entreprise.store');
+
+Route::delete('/users/{id}', 'UserController@deleteUser')->name('users.delete');
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -64,4 +74,5 @@ Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
         Route::put('/profile-update',[ProfileController::class,'update'])->name('profile.update');
         Route::get('/mail',[MailSettingController::class,'index'])->name('mail.index');
         Route::put('/mail-update/{mailsetting}',[MailSettingController::class,'update'])->name('mail.update');
+        Route::get('/entreprise/create', [EntrepriseController::class, 'create'])->name('entreprise.create');
 });

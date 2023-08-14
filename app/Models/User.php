@@ -8,9 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Auth\Passwords\CanResetPassword; 
 
 class User extends Authenticatable
 {
+    use  CanResetPassword;
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
@@ -43,4 +45,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function deleteUser($id)
+{
+    $user = User::find($id);
+
+    if ($user) {
+        $user->delete();
+        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+    }
+
+    return redirect()->route('users.index')->with('error', 'User not found.');
+}
 }

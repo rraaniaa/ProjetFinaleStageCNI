@@ -4,6 +4,14 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Models\Mailsetting;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use App\Observers\AssignUserRole;
+use App\Models\User;
+
+
+
+
 
 use Config;
 
@@ -26,6 +34,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
+     User::observe(AssignUserRole::class);
+     
+
+        
+        Schema::defaultStringLength(191);
+        Schema::defaultStringLength(191);
+        
+        
         if (\Schema::hasTable('mailsettings')) {
             $mailsetting = Mailsetting::first();
             if($mailsetting){
@@ -42,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
                     ]
                 ];
                 Config::set('mail',$data);
+                
             }
         }
     }

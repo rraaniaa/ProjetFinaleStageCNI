@@ -5,50 +5,49 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Spatie\Permission\PermissionRegistrar;
 
+
+$teams = false;
+
 class CreatePermissionTables extends Migration
 {
+    
     /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
-    {
+    {  $columnNames = [
+        'team_foreign_key' => 'team_id',
+        'model_morph_key' => 'user_id', // Exemple de nom de colonne pour la clé étrangère polymorphique
+        // ... autres noms de colonnes
+    ];
+    
+         $teams = false;
         $tableNames = config('permission.table_names');
-        $columnNames = config('permission.column_names');
-        $teams = config('permission.teams');
 
         if (empty($tableNames)) {
             throw new \Exception('Error: config/permission.php not loaded. Run [php artisan config:clear] and try again.');
         }
-        if ($teams && empty($columnNames['team_foreign_key'] ?? null)) {
-            throw new \Exception('Error: team_foreign_key on config/permission.php not loaded. Run [php artisan config:clear] and try again.');
-        }
-
-        Schema::create($tableNames['permissions'], function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');       // For MySQL 8.0 use string('name', 125);
-            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
-            $table->timestamps();
-
-            $table->unique(['name', 'guard_name']);
-        });
-
-        Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
-            $table->bigIncrements('id');
-            if ($teams || config('permission.testing')) { // permission.testing is a fix for sqlite testing
-                $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
-                $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
-            }
-            $table->string('name');       // For MySQL 8.0 use string('name', 125);
-            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
-            $table->timestamps();
-            if ($teams || config('permission.testing')) {
-                $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);
-            } else {
-                $table->unique(['name', 'guard_name']);
-            }
-        });
+    
+        // Check if the 'roles' table does not exist before creating it
+        if (!Schema::hasTable($tableNames['roles'])) {
+            Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
+                $table->bigIncrements('id');
+                if ($teams || config('permission.testing')) { // permission.testing is a fix for sqlite testing
+                    $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
+                    $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
+                }
+                $table->string('name', 100);       // Set the length of name to 100 characters
+                $table->string('guard_name', 100); // Set the length of guard_name to 100 characters
+                $table->timestamps();
+                if ($teams || config('permission.testing')) {
+                    $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name'], 'roles_name_guard_name_unique');
+                } else {
+                    $table->unique(['name', 'guard_name'], 'roles_name_guard_name_unique');
+                }
+            });
+        
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {
             $table->unsignedBigInteger(PermissionRegistrar::$pivotPermission);
@@ -117,7 +116,7 @@ class CreatePermissionTables extends Migration
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
             ->forget(config('permission.cache.key'));
-    }
+    }}
 
     /**
      * Reverse the migrations.
