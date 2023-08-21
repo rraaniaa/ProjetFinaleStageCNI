@@ -57,3 +57,9 @@
         </form>
     </x-auth-card>
 </x-guest-layout>
+<style>
+    body {
+    
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+</style>

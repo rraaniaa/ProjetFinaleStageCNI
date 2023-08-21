@@ -2,6 +2,8 @@
 
 @section('content')
     <div class="container">
+        <h1>hi</h1>
+        
         <form method="post" action="{{ route('entreprise.store') }}">
             @csrf
             <!-- Utilisez la méthode POST -->

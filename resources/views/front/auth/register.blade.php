@@ -1,4 +1,6 @@
-<x-front-guest-layout>
+ 
+ <div class="bg-gray-900">
+ <x-front-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
@@ -58,3 +60,10 @@
         </form>
     </x-auth-card>
 </x-front-guest-layout>
+</div>
+<style>
+    body {
+    
+    background: linear-gradient(-135deg, #c850c0, #4158d0);
+}
+</style>

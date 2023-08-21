@@ -18,14 +18,22 @@
               <div class="flex flex-col space-y-1">
                 <input type="password" name="password" id="password" class="border-2 rounded px-3 py-2 w-full focus:outline-none focus:border-blue-400 focus:shadow" placeholder="Password" required autocomplete="current-password"/>
               </div>
+              <div class="flex items-center justify-end mt-4">
+                @if (Route::has('password.request'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
+                        {{ __('Forgot your password?') }}
+                    </a>
+                @endif
 
-
-
-              <div class="flex flex-col-reverse sm:flex-row sm:justify-between items-center">
-
-                <button type="submit" class="bg-blue-500 text-white font-bold px-5 py-2 rounded focus:outline-none shadow hover:bg-blue-700 transition-colors m-auto">Log In</button>
-              </div>
+                <x-button class="ml-3">
+                    {{ __('Log in') }}
+                </x-button>
             </div>
+
+
+            </div>
+
+            
           </form>
 
     </div>

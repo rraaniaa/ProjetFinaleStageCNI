@@ -9,22 +9,27 @@ class MailsettingController extends Controller
     public function create()
     {
         return view('create');
+        return view('cycles.create');
     }
 
     public function store(Request $request)
+    
     {
-        // Valider les données soumises
+        // Validation logic for cycle form fields
         $validatedData = $request->validate([
             'nom_entreprise' => 'required|string',
             'num_action' => 'required|string',
             'theme_formation' => 'required|string',
             'mode_formation' => 'required|string',
-            // Valider d'autres champs...
+            // Add validation rules for other fields
         ]);
 
-        // Traiter les données soumises, par exemple, les enregistrer dans la base de données
-        // ...
+        // Processing logic for cycle data, e.g., storing in the database
+        // Replace this with your actual database insertion code
+        // You can access validated data using $validatedData array
+        // Example:
+        // Cycle::create($validatedData);
 
-        return redirect()->route('entreprise.create')->with('success', 'Formulaire soumis avec succès!');
+        return redirect()->route('cycle.create')->with('success', 'Cycle created successfully!');
     }
 }

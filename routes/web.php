@@ -1,9 +1,12 @@
 <?php
 
+
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
     MailSettingController,
+    EntrepriseController, // Add this import
 };
 
 /*
@@ -19,10 +22,47 @@ use App\Http\Controllers\Admin\{
 // routes/web.php
 // routes/web.php
 
-use App\Http\Controllers\EntrepriseController;
+use App\Http\Controllers\CycleController; // Import the CycleController
+
+Route::get('/cycles/new', [CycleController::class, 'new'])->name('cycles.new'); // Assumption for displaying the form
+
+Route::get('/cycle/create', [CycleController::class, 'create'])->name('admin.create-cycle'); // Display form for creating cycle
+Route::post('/cycle', [CycleController::class, 'store'])->name('admin.store-cycle'); // Store the new cycle
+Route::get('/cycles', [CycleController::class, 'index'])->name('cycles.index'); // List all cycles
+Route::delete('/cycles/{id}', [CycleController::class, 'destroy'])->name('cycles.destroy');
+Route::get('/cycle/{id}/edit', [CycleController::class, 'edit'])->name('admin.edit-cycle'); // Display form for editing cycle
+
+Route::put('/cycle/{id}', [CycleController::class, 'update'])->name('admin.update-cycle');
 
 
-Route::post('/entreprise', [EntrepriseController::class, 'store'])->name('entreprise.store');
+
+
+
+
+
+
+
+
+
+Route::get('/admin/create', function () {
+    // Your logic here
+})->name('admin.create');
+
+
+// ... Other route definitions ...
+
+Route::namespace('App\Http\Controllers\Admin')->name('admin.')->prefix('admin')
+    ->group(function () {
+        // ... Other admin routes ...
+
+        // Add the following route definitions inside the group
+        Route::get('/entreprise/create', [EntrepriseController::class, 'create'])->name('entreprise.create');
+        Route::post('/entreprise', [EntrepriseController::class, 'store'])->name('entreprise.store');
+    });
+
+// ... Other route definitions ...
+// routes/web.php
+
 
 Route::delete('/users/{id}', 'UserController@deleteUser')->name('users.delete');
 

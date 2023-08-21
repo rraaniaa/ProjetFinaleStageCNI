@@ -13,18 +13,20 @@ class EntrepriseController extends Controller
 
     public function store(Request $request)
     {
-        // Valider les données soumises
+        // Validate the submitted data
         $validatedData = $request->validate([
             'nom_entreprise' => 'required|string',
             'num_action' => 'required|string',
             'theme_formation' => 'required|string',
             'mode_formation' => 'required|string',
-            // Valider d'autres champs...
+            // Validate other fields...
         ]);
-
-        // Traiter les données soumises, par exemple, les enregistrer dans la base de données
+    
+        // Process the submitted data, such as saving to the database
         // ...
-
-        return redirect()->route('entreprise.create')->with('success', 'Formulaire soumis avec succès!');
+    
+        // Redirect to a different route after successful form submission
+        return redirect()->route('admin.dashboard')->with('success', 'Formulaire soumis avec succès!');
     }
+    
 }
