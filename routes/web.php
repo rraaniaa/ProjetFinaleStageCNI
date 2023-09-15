@@ -2,6 +2,7 @@
 
 
 
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\{
     ProfileController,
@@ -21,6 +22,21 @@ use App\Http\Controllers\Admin\{
 */
 // routes/web.php
 // routes/web.php
+
+
+
+
+
+Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->middleware('guest')
+    ->name('password.forgot-password'); // Updated route name
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware('guest')
+    ->name('password.send-reset-link'); // Updated route name
+
+
+
 
 use App\Http\Controllers\CycleController; // Import the CycleController
 
@@ -94,11 +110,22 @@ Route::get('/dashboard', function () {
 require __DIR__.'/front_auth.php';
 
 // Admin routes
-Route::get('/admin/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('admin.dashboard');
+//Route::get('/admin/dashboard', function () {
+ //   return view('dashboard');
+//})->middleware(['auth'])->name('admin.dashboard');
 
 require __DIR__.'/auth.php';
+
+
+
+
+
+use App\Models\Cycle; // Import the appropriate Cycle model
+
+Route::get('/admin/dashboard', function () {
+    $cycles = Cycle::all(); // Assuming you want to fetch all cycles from the database
+    return view('dashboard', ['cycles' => $cycles]);
+})->middleware(['auth'])->name('admin.dashboard');
 
 
 

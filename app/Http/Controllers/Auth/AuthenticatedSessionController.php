@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthenticatedSessionController extends Controller
 {
+
+    
     /**
      * Display the login view.
      *
@@ -17,6 +19,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
+        
         return view('auth.login');
     }
 
@@ -51,4 +54,5 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+    
 }

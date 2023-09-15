@@ -8,6 +8,10 @@ use App\Models\Cycle; // Don't forget to import your Cycle model
 class CycleController extends Controller
 {
 
+
+
+
+    
     public function edit($id)
     {
         $cycle = Cycle::findOrFail($id);
@@ -99,6 +103,8 @@ class CycleController extends Controller
         $cycle->nom_entreprise = $validatedData['nom_entreprise'];
         $cycle->num_action = $validatedData['num_action'];
         $cycle->theme_formation = $validatedData['theme_formation'];
+        $cycle->gouvernorat = $validatedData['gouvernorat'];
+        $cycle->lieu_formation = $validatedData['lieu_formation'];
         $cycle->droit_tirage_indiv = $request->has('droit_tirage_indiv');
         $cycle->droit_tirage_collec = $request->has('droit_tirage_collec');
         // Set other properties of the Cycle model

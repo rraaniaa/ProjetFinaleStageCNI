@@ -32,6 +32,10 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+
+
+
+        
         $filterName = $request->input('filter_name'); // Get the filter value from the request
     
         // Query users based on the filter name
